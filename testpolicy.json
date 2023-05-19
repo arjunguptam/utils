@@ -1,0 +1,53 @@
+{
+  "Resources": {
+    "OffsecAdminUser": {
+      "Type": "AWS::IAM::User"
+    },
+    "AdminPolicy": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "Description" : "This policy allows all actions on all resources.",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "*"
+              ],
+              "Resource": "*"
+            }
+          ]
+        },
+        "Users": [{
+          "Ref": "OffsecAdminUser"
+        }]
+      }
+    },
+    "MyUserKeys": {
+      "Type": "AWS::IAM::AccessKey",
+      "Properties": {
+        "UserName": {
+          "Ref": "OffsecAdminUser"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "AccessKey": {
+      "Value": {
+        "Ref": "MyUserKeys"
+      },
+      "Description": "Access Key ID of Offsec Admin User"
+    },
+    "SecretKey": {
+      "Value": {
+        "Fn::GetAtt": [
+          "MyUserKeys",
+          "SecretAccessKey"
+        ]
+      },
+      "Description": "Secret Key of Offec offsec Admin User"
+    }
+  }
+}
